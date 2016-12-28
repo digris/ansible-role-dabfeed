@@ -1,0 +1,48 @@
+---
+
+##
+# when using the default settings user and group are created
+# during the package installation. so the following step is likely redundant
+
+# user & group
+- name: add icecast group
+  group: name={{ icecast_group }} state=present
+
+- name: add icecast user
+  user: name={{ icecast_user }} state=present
+        group={{ icecast_group }}
+
+
+##
+# adding the actual icecast2 xml config
+# default: /etc/icecast2/icecast.xml
+#
+# also handles mountpoint configuration
+# in the digris setup this is defined in 'group_vars/icecast-feed.yml'
+# (in the infrastructure repository)
+- name: add icecast2 xml config
+  template: src=icecast.xml
+            dest=/etc/icecast2/icecast.xml
+
+
+##
+# configure htpasswd
+# ansible htpasswd module does not support plain md5 - icecast ony supports plain md5
+# so the password has to be given hashed for now
+- name: add default client htpasswd file
+  htpasswd:
+    path: '{{ icecast_default_client_htpasswd_file }}'
+    name: '{{ icecast_default_client_username }}'
+    password: '{{ icecast_default_client_password_md5 }}'
+    crypt_scheme: plaintext
+
+- name: Add icecast2 css
+  template: src=style.css
+            dest=/etc/icecast2/web/style.css
+
+
+# reload icecast2 service
+- name: reload icecast2 service
+  service:
+    name: icecast2
+    state: reloaded

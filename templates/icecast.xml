@@ -1,0 +1,78 @@
+<icecast>
+
+    <location>{{ icecast_server_location }}</location>
+    <admin>{{ icecast_admin_email }}</admin>
+
+    <limits>
+        <clients>100</clients>
+        <sources>2</sources>
+        <threadpool>5</threadpool>
+        <queue-size>524288</queue-size>
+        <client-timeout>30</client-timeout>
+        <header-timeout>15</header-timeout>
+        <source-timeout>10</source-timeout>
+        <!-- If enabled, this will provide a burst of data when a client
+             first connects, thereby significantly reducing the startup
+             time for listeners that do substantial buffering. However,
+             it also significantly increases latency between the source
+             client and listening client. For low-latency setups, you
+             might want to disable this. -->
+        <burst-on-connect>0</burst-on-connect>
+        <burst-size>65535</burst-size>
+    </limits>
+
+    <authentication>
+        <!--  we don't need/want global source passwords in this setup -->
+        <!--<source-password>{{ icecast_source_password }}</source-password>-->
+        <admin-user>admin</admin-user>
+        <admin-password>{{ icecast_admin_password }}</admin-password>
+    </authentication>
+
+    <hostname>{{ icecast_hostname }}</hostname>
+
+    <listen-socket>
+        <port>{{ icecast_port }}</port>
+    </listen-socket>
+
+    <!--
+    inserted mounts (from ansible 'icecast_mounts' variable)
+    -->
+{% for item in icecast_mounts %}
+    <mount>
+        <mount-name>{{ item.mount.name }}</mount-name>
+        <username>{{ item.mount.source_user|default('source') }}</username>
+        <password>{{ item.mount.source_password }}</password>
+        <hidden>0</hidden>
+        <authentication type="htpasswd">
+            <option name="filename" value="{{ item.mount.client_htpasswd_file|default(icecast_default_client_htpasswd_file) }}"/>
+            <option name="allow_duplicate_users" value="1"/>
+        </authentication>
+    </mount>
+{% endfor %}
+
+
+    <paths>
+        <basedir>/usr/share/icecast2</basedir>
+        <logdir>{{ icecast_log_directory }}</logdir>
+        <webroot>/usr/share/icecast2/web</webroot>
+        <adminroot>/usr/share/icecast2/admin</adminroot>
+        <alias source="/" destination="/status.xsl"/>
+    </paths>
+
+    <logging>
+        <accesslog>access.log</accesslog>
+        <errorlog>error.log</errorlog>
+      	<loglevel>{{ icecast_log_level }}</loglevel>
+      	<logsize>10000</logsize> <!-- Max size of a logfile -->
+    </logging>
+
+    <security>
+        <chroot>0</chroot>
+
+        <changeowner>
+            <user>{{ icecast_user }}</user>
+            <group>{{ icecast_group }}</group>
+        </changeowner>
+
+    </security>
+</icecast>

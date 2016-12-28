@@ -1,0 +1,17 @@
+galaxy_info:
+  author: Jonas Ohrstrom
+  description: icecast server setup for password protected feeds
+  company: digris AG
+  license: MIT
+  min_ansible_version: 2.0
+  github_branch: master
+  platforms:
+  - name: Debian
+    versions:
+    - jessie
+  categories:
+  - multimedia
+
+  galaxy_tags: ['audio', 'streaming']
+
+dependencies: []

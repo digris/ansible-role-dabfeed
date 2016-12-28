@@ -1,0 +1,12 @@
+---
+
+- name: install icecast2
+  apt: pkg=icecast2 state=present
+
+- name: install python-passlib
+  apt: pkg=python-passlib state=present
+
+- name: add icecast2 default file (/etc/default/icecast2)
+  template: src=icecast2_default.j2
+            dest=/etc/default/icecast2
+

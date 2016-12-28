@@ -1,0 +1,9 @@
+# Defaults for icecast2 initscript
+
+# Full path to the server configuration file
+CONFIGFILE="{{ icecast_config_file }}"
+
+# Name or ID of the user and group the daemon should run under
+USERID={{ icecast_user }}
+GROUPID={{ icecast_group }}
+ENABLE={{ icecast_enabled }}

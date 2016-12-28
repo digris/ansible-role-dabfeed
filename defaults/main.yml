@@ -1,0 +1,48 @@
+---
+
+icecast_config_file: /etc/icecast2/icecast.xml
+icecast_user: icecast2
+icecast_group: icecast
+icecast_enabled: 'true' # string needed here
+
+icecast_log_directory: /var/log/icecast2
+icecast_log_level: 3 # 4 Debug, 3 Info, 2 Warn, 1 Error
+
+icecast_server_location: cloud
+icecast_admin_email: root@digris.ch
+
+icecast_hostname: '{{ ansible_fqdn }}'
+icecast_port: 8000
+
+##
+# 'global' authentication
+# below the INSECURE defaults. make sure to provide these passwords
+# in a more secure form!
+# in the digris setup they are stored with vault in 'secrets/secrets.yml'
+# source & rely authentication is not enablet in the digris setup
+icecast_source_password: hackme
+icecast_relay_password: hackme
+icecast_admin_password: hackme
+
+##
+# icecast mountpoints
+# example:
+#
+# icecast_mounts:
+#   - mount:
+#      name: obp
+#      source_user: source
+#      source_password: pass
+#      client_htpasswd_file: /path/to/htpasswd_file # default: 'icecast_default_client_htpasswd_file'
+#   - mount:
+#     ...
+
+icecast_mounts: []
+
+##
+# client authentication
+# ansible htpasswd module does not support plain md5 - icecast ony supports plain md5
+# so the password has to be given hashed for now
+icecast_default_client_username: client
+icecast_default_client_password_md5: 62608e08adc29a8d6dbc9754e659f125 # "client"
+icecast_default_client_htpasswd_file: /usr/share/icecast2/auth/client_passwd

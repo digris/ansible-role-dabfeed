@@ -1,0 +1,9 @@
+---
+
+- name: install icecast2
+  include: install-icecast.yml
+  tags: icecast-server
+
+- name: install icecast2
+  include: configure-icecast.yml
+  tags: icecast-server
