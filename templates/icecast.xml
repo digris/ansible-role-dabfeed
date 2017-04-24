@@ -4,7 +4,7 @@
     <admin>{{ icecast_admin_email }}</admin>
 
     <limits>
-        <clients>100</clients>
+        <clients>{{ icecast_server_max_clients }}</clients>
         <sources>200</sources>
         <threadpool>5</threadpool>
         <queue-size>524288</queue-size>

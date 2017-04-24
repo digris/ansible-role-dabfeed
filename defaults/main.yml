@@ -14,6 +14,8 @@ icecast_admin_email: root@digris.ch
 icecast_hostname: '{{ ansible_fqdn }}'
 icecast_port: 8000
 
+icecast_server_max_clients: 100
+
 ##
 # 'global' authentication
 # below the INSECURE defaults. make sure to provide these passwords
